@@ -230,7 +230,7 @@ async function experimentInit() {
   instructions_text = new visual.TextStim({
     win: psychoJS.window,
     name: 'instructions_text',
-    text: 'INSTRUCCIONES\n\nEn este experimento verás brevemente un patrón visual y deberás indicar la orientación correcta (izquierda o derecha).\n\nDespués de cada decisión podrás elegir si deseas recibir la sugerencia de un sistema automático. Si decides verla, podrás mantener tu decisión o cambiarla después de observar la sugerencia.\n\nDespués de cada respuesta indicarás tu nivel de confianza usando una barra deslizante.\n\nAl inicio y al final del experimento responderás un breve cuestionario sobre confianza en sistemas automáticos.\n\nNo hay respuestas correctas o incorrectas en cuanto a tus opiniones o niveles de confianza. Por favor responde de manera honesta.\n\nCuando estés listo/a para comenzar, toca CONTINUAR',
+    text: 'INSTRUCCIONES\n\nEn este experimento verás brevemente un patrón visual y deberás indicar la orientación correcta (izquierda o derecha).\n\nDespués de cada decisión podrás elegir si deseas recibir la sugerencia de un sistema automático. Si decides verla, podrás mantener tu decisión inicial o cambiarla después de observar la sugerencia.\n\nSolamente en el caso que elijas recibir la sugerencia de un sistema automático, después de cada respuesta indicarás tu nivel de confianza usando una barra deslizante.\n\nAl inicio y al final del experimento responderás un breve cuestionario sobre confianza en sistemas automáticos.\n\nNo hay respuestas correctas o incorrectas en cuanto a tus opiniones o niveles de confianza. Por favor responde de manera honesta.\n\nCuando estés listo/a para comenzar, toca CONTINUAR',
     font: 'Arial',
     units: undefined, 
     pos: [0, 0.2], draggable: false, height: 0.04,  wrapWidth: undefined, ori: 0.0,
@@ -244,7 +244,7 @@ async function experimentInit() {
     name: 'button_start',
     text: 'CONTINUAR',
     font: 'Arvo',
-    pos: [0, (- 0.35)],
+    pos: [0, (- 0.3)],
     size: [0.4, 0.1],
     padding: null,
     anchor: 'center',
