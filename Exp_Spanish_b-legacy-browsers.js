@@ -236,7 +236,7 @@ async function experimentInit() {
     name: 'button_start',
     text: 'CONTINUAR',
     font: 'Arvo',
-    pos: [0, (- 0.4)],
+    pos: [0, (- 0.5)],
     size: [0.4, 0.1],
     padding: null,
     anchor: 'center',
