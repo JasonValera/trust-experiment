@@ -136,6 +136,8 @@ async function updateInfo() {
 
 var WelcomeClock;
 var welcome_text;
+var instructions_text;
+var button_start;
 var Demo_ageClock;
 var next_survey;
 var text_01;
@@ -208,7 +210,7 @@ async function experimentInit() {
   welcome_text = new visual.TextStim({
     win: psychoJS.window,
     name: 'welcome_text',
-    text: 'BIENVENIDO',
+    text: 'BIENVENIDO/A',
     font: 'Arial',
     units: undefined, 
     pos: [0, 0], draggable: false, height: 0.1,  wrapWidth: undefined, ori: 0.0,
@@ -216,6 +218,42 @@ async function experimentInit() {
     color: new util.Color('white'),  opacity: undefined,
     depth: 0.0 
   });
+  
+  instructions_text = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'instructions_text',
+    text: 'INSTRUCCIONES\n\nEn este experimento verás brevemente un patrón visual y deberás indicar la orientación correcta (izquierda o derecha).\n\nDespués de cada decisión podrás elegir si deseas recibir la sugerencia de un sistema automático. Si decides verla, podrás mantener tu decisión o cambiarla después de observar la sugerencia.\n\nDespués de cada respuesta indicarás tu nivel de confianza usando una barra deslizante.\n\nAl inicio y al final del experimento responderás un breve cuestionario sobre confianza en sistemas automáticos.\n\nNo hay respuestas correctas o incorrectas en cuanto a tus opiniones o niveles de confianza. Por favor responde de manera honesta.\n\nCuando estés listo/a para comenzar, toca CONTINUAR',
+    font: 'Arial',
+    units: undefined, 
+    pos: [0, 0.1], draggable: false, height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color('white'),  opacity: undefined,
+    depth: -1.0 
+  });
+  
+  button_start = new visual.ButtonStim({
+    win: psychoJS.window,
+    name: 'button_start',
+    text: 'CONTINUAR',
+    font: 'Arvo',
+    pos: [0, (- 0.3)],
+    size: [0.4, 0.1],
+    padding: null,
+    anchor: 'center',
+    ori: 0.0,
+    units: psychoJS.window.units,
+    color: 'white',
+    fillColor: 'darkgrey',
+    borderColor: null,
+    colorSpace: 'rgb',
+    borderWidth: 0.0,
+    opacity: null,
+    depth: -2,
+    letterHeight: 0.05,
+    bold: true,
+    italic: false,
+  });
+  button_start.clock = new util.Clock();
   
   // Initialize components for Routine "Demo_age"
   Demo_ageClock = new util.Clock();
@@ -710,7 +748,7 @@ async function experimentInit() {
     win: psychoJS.window, name: 'trust_slider',
     startValue: undefined,
     size: [0.8, 0.05], pos: [0, 0], ori: 0.0, units: psychoJS.window.units,
-    labels: ["No conf\u00edo en nada", "Conf\u00edo completamente"], fontSize: 0.03, ticks: [0, 100],
+    labels: ["No conf\u00edo", "Conf\u00edo 100%"], fontSize: 0.03, ticks: [0, 100],
     granularity: 1.0, style: ["RATING"],
     color: new util.Color('LightGray'), markerColor: new util.Color('Red'), lineColor: new util.Color('White'), 
     opacity: undefined, fontFamily: 'Noto Sans', bold: true, italic: false, depth: 0, 
@@ -775,7 +813,7 @@ async function experimentInit() {
   slider_2 = new visual.Slider({
     win: psychoJS.window, name: 'slider_2',
     startValue: undefined,
-    size: [1.0, 0.1], pos: [0, 0.15], ori: 0.0, units: psychoJS.window.units,
+    size: [0.8, 0.1], pos: [0, 0.15], ori: 0.0, units: psychoJS.window.units,
     labels: [1, 2, 3, 4, 5, 6, 7], fontSize: 0.05, ticks: [1, 2, 3, 4, 5, 6, 7],
     granularity: 1.0, style: ["RATING"],
     color: new util.Color('LightGray'), markerColor: new util.Color('Red'), lineColor: new util.Color('White'), 
@@ -834,15 +872,19 @@ function WelcomeRoutineBegin(snapshot) {
     continueRoutine = true; // until we're told otherwise
     // keep track of whether this Routine was forcibly ended
     routineForceEnded = false;
-    WelcomeClock.reset(routineTimer.getTime());
-    routineTimer.add(1.000000);
+    WelcomeClock.reset();
+    routineTimer.reset();
     WelcomeMaxDurationReached = false;
     // update component parameters for each repeat
+    // reset button_start to account for continued clicks & clear times on/off
+    button_start.reset()
     psychoJS.experiment.addData('Welcome.started', globalClock.getTime());
     WelcomeMaxDuration = null
     // keep track of which components have finished
     WelcomeComponents = [];
     WelcomeComponents.push(welcome_text);
+    WelcomeComponents.push(instructions_text);
+    WelcomeComponents.push(button_start);
     
     WelcomeComponents.forEach( function(thisComponent) {
       if ('status' in thisComponent)
@@ -886,6 +928,65 @@ function WelcomeRoutineEachFrame() {
       welcome_text.setAutoDraw(false);
     }
     
+    
+    // *instructions_text* updates
+    if (t >= 1 && instructions_text.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      instructions_text.tStart = t;  // (not accounting for frame time here)
+      instructions_text.frameNStart = frameN;  // exact frame index
+      
+      instructions_text.setAutoDraw(true);
+    }
+    
+    
+    // if instructions_text is active this frame...
+    if (instructions_text.status === PsychoJS.Status.STARTED) {
+    }
+    
+    
+    // *button_start* updates
+    if (t >= 1 && button_start.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      button_start.tStart = t;  // (not accounting for frame time here)
+      button_start.frameNStart = frameN;  // exact frame index
+      
+      button_start.setAutoDraw(true);
+    }
+    
+    
+    // if button_start is active this frame...
+    if (button_start.status === PsychoJS.Status.STARTED) {
+    }
+    
+    if (button_start.status === PsychoJS.Status.STARTED) {
+      // check whether button_start has been pressed
+      if (button_start.isClicked) {
+        if (!button_start.wasClicked) {
+          // store time of first click
+          button_start.timesOn.push(button_start.clock.getTime());
+          // store time clicked until
+          button_start.timesOff.push(button_start.clock.getTime());
+        } else {
+          // update time clicked until;
+          button_start.timesOff[button_start.timesOff.length - 1] = button_start.clock.getTime();
+        }
+        if (!button_start.wasClicked) {
+          // end routine when button_start is clicked
+          continueRoutine = false;
+          
+        }
+        // if button_start is still clicked next frame, it is not a new click
+        button_start.wasClicked = true;
+      } else {
+        // if button_start is clicked next frame, it is a new click
+        button_start.wasClicked = false;
+      }
+    } else {
+      // keep clock at 0 if button_start hasn't started / has finished
+      button_start.clock.reset();
+      // if button_start is clicked next frame, it is a new click
+      button_start.wasClicked = false;
+    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -905,7 +1006,7 @@ function WelcomeRoutineEachFrame() {
     });
     
     // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
+    if (continueRoutine) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -923,12 +1024,12 @@ function WelcomeRoutineEnd(snapshot) {
       }
     });
     psychoJS.experiment.addData('Welcome.stopped', globalClock.getTime());
-    if (routineForceEnded) {
-        routineTimer.reset();} else if (WelcomeMaxDurationReached) {
-        WelcomeClock.add(WelcomeMaxDuration);
-    } else {
-        WelcomeClock.add(1.000000);
-    }
+    psychoJS.experiment.addData('button_start.numClicks', button_start.numClicks);
+    psychoJS.experiment.addData('button_start.timesOn', button_start.timesOn);
+    psychoJS.experiment.addData('button_start.timesOff', button_start.timesOff);
+    // the Routine "Welcome" was not non-slip safe, so reset the non-slip timer
+    routineTimer.reset();
+    
     // Routines running outside a loop should always advance the datafile row
     if (currentLoop === psychoJS.experiment) {
       psychoJS.experiment.nextEntry(snapshot);
