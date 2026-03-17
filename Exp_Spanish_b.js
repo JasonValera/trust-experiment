@@ -233,7 +233,7 @@ async function experimentInit() {
     text: 'INSTRUCCIONES\n\nEn este experimento verás brevemente un patrón visual y deberás indicar la orientación correcta (izquierda o derecha).\n\nDespués de cada decisión podrás elegir si deseas recibir la sugerencia de un sistema automático. Si decides verla, podrás mantener tu decisión o cambiarla después de observar la sugerencia.\n\nDespués de cada respuesta indicarás tu nivel de confianza usando una barra deslizante.\n\nAl inicio y al final del experimento responderás un breve cuestionario sobre confianza en sistemas automáticos.\n\nNo hay respuestas correctas o incorrectas en cuanto a tus opiniones o niveles de confianza. Por favor responde de manera honesta.\n\nCuando estés listo/a para comenzar, toca CONTINUAR',
     font: 'Arial',
     units: undefined, 
-    pos: [0, 0.1], draggable: false, height: 0.03,  wrapWidth: undefined, ori: 0.0,
+    pos: [0, 0.2], draggable: false, height: 0.04,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -1.0 
@@ -244,7 +244,7 @@ async function experimentInit() {
     name: 'button_start',
     text: 'CONTINUAR',
     font: 'Arvo',
-    pos: [0, (- 0.3)],
+    pos: [0, (- 0.35)],
     size: [0.4, 0.1],
     padding: null,
     anchor: 'center',
@@ -1599,7 +1599,7 @@ function trialsLoopBegin(trialsLoopScheduler, snapshot) {
     // set up handler to look after randomisation of conditions etc
     trials = new TrialHandler({
       psychoJS: psychoJS,
-      nReps: 5, method: TrialHandler.Method.SEQUENTIAL,
+      nReps: 20, method: TrialHandler.Method.SEQUENTIAL,
       extraInfo: expInfo, originPath: undefined,
       trialList: undefined,
       seed: undefined, name: 'trials'
