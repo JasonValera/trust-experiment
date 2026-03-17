@@ -300,7 +300,7 @@ async function experimentInit() {
   slider_gender = new visual.Slider({
     win: psychoJS.window, name: 'slider_gender',
     startValue: undefined,
-    size: [1.0, 0.1], pos: [0, 0], ori: 0.0, units: psychoJS.window.units,
+    size: [0.8, 0.1], pos: [0, 0], ori: 0.0, units: psychoJS.window.units,
     labels: ["Masculino", "Femenino", "Prefiero no decirlo"], fontSize: 0.03, ticks: [1, 2, 3],
     granularity: 1.0, style: ["RATING"],
     color: new util.Color('LightGray'), markerColor: new util.Color('Red'), lineColor: new util.Color('White'), 
@@ -351,7 +351,7 @@ async function experimentInit() {
   slider = new visual.Slider({
     win: psychoJS.window, name: 'slider',
     startValue: undefined,
-    size: [1.0, 0.1], pos: [0, 0.15], ori: 0.0, units: psychoJS.window.units,
+    size: [0.8, 0.1], pos: [0, 0.15], ori: 0.0, units: psychoJS.window.units,
     labels: [1, 2, 3, 4, 5, 6, 7], fontSize: 0.05, ticks: [1, 2, 3, 4, 5, 6, 7],
     granularity: 1.0, style: ["RATING"],
     color: new util.Color('LightGray'), markerColor: new util.Color('Red'), lineColor: new util.Color('White'), 
@@ -709,7 +709,7 @@ async function experimentInit() {
   trust_slider = new visual.Slider({
     win: psychoJS.window, name: 'trust_slider',
     startValue: undefined,
-    size: [1, 0.05], pos: [0, 0], ori: 0.0, units: psychoJS.window.units,
+    size: [0.8, 0.05], pos: [0, 0], ori: 0.0, units: psychoJS.window.units,
     labels: ["No conf\u00edo en nada", "Conf\u00edo completamente"], fontSize: 0.03, ticks: [0, 100],
     granularity: 1.0, style: ["RATING"],
     color: new util.Color('LightGray'), markerColor: new util.Color('Red'), lineColor: new util.Color('White'), 
@@ -3925,6 +3925,16 @@ async function quitPsychoJS(message, isCompleted) {
   if (psychoJS.experiment.isEntryEmpty()) {
     psychoJS.experiment.nextEntry();
   }
+  let dataset = psychoJS.experiment._trialsData;
+  
+  fetch("https://script.google.com/macros/s/AKfycbxuzO8LaXN6BUPLXFEvXAkzlPaJNj8PnM9IZaRVpPRs1VYwgPr9U0fB_Yl5T32YKRqH/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(dataset)
+  });
   psychoJS.window.close();
   psychoJS.quit({message: message, isCompleted: isCompleted});
   
