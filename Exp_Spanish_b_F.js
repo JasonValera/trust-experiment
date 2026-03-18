@@ -181,6 +181,7 @@ var suggestion;
 var final_choice;
 var feedback;
 var first_choice;
+var advisor_follow;
 var trial_count;
 var tilt;
 var FirstClock;
@@ -188,14 +189,12 @@ var first_text;
 var first_decision;
 var button_left_first;
 var button_right_first;
-var mouse_first;
 var trial_count_text;
 var AdviceClock;
 var advice_text;
 var advice_key;
 var button_advice_yes;
 var button_advice_no;
-var mouse_advice;
 var AdvisorClock;
 var text_06;
 var initial_choice;
@@ -205,7 +204,6 @@ var decision_text;
 var decision_key;
 var button_left_final;
 var button_right_final;
-var mouse_final;
 var ITIClock;
 var final_text;
 var Trust_AdjustmentClock;
@@ -566,11 +564,12 @@ async function experimentInit() {
     texRes : 128.0, interpolate : true, depth : -1.0 
   });
   // Run 'Begin Experiment' code from code_5
-  correct_answer = "izquierda";
-  suggestion = "izquierda";
-  final_choice = "izquierda";
-  feedback = "correcta";
-  first_choice = "izquierda";
+  correct_answer = "IZQUIERDA";
+  suggestion = "IZQUIERDA";
+  final_choice = null;
+  feedback = "CORRECTA";
+  first_choice = "IZQUIERDA";
+  advisor_follow = "N";
   trial_count = 0;
   tilt = 0;
   
@@ -638,10 +637,6 @@ async function experimentInit() {
   });
   button_right_first.clock = new util.Clock();
   
-  mouse_first = new core.Mouse({
-    win: psychoJS.window,
-  });
-  mouse_first.mouseClock = new util.Clock();
   trial_count_text = new visual.TextStim({
     win: psychoJS.window,
     name: 'trial_count_text',
@@ -651,7 +646,7 @@ async function experimentInit() {
     pos: [0.3, 0.3], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
-    depth: -6.0 
+    depth: -5.0 
   });
   
   // Initialize components for Routine "Advice"
@@ -718,10 +713,6 @@ async function experimentInit() {
   });
   button_advice_no.clock = new util.Clock();
   
-  mouse_advice = new core.Mouse({
-    win: psychoJS.window,
-  });
-  mouse_advice.mouseClock = new util.Clock();
   // Initialize components for Routine "Advisor"
   AdvisorClock = new util.Clock();
   text_06 = new visual.TextStim({
@@ -834,10 +825,6 @@ async function experimentInit() {
   });
   button_right_final.clock = new util.Clock();
   
-  mouse_final = new core.Mouse({
-    win: psychoJS.window,
-  });
-  mouse_final.mouseClock = new util.Clock();
   // Initialize components for Routine "ITI"
   ITIClock = new util.Clock();
   final_text = new visual.TextStim({
@@ -988,7 +975,6 @@ function WelcomeRoutineBegin(snapshot) {
     // update component parameters for each repeat
     // reset button_start to account for continued clicks & clear times on/off
     button_start.reset()
-    psychoJS.experiment.addData('Welcome.started', globalClock.getTime());
     WelcomeMaxDuration = null
     // keep track of which components have finished
     WelcomeComponents = [];
@@ -1132,7 +1118,6 @@ function WelcomeRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('Welcome.stopped', globalClock.getTime());
     psychoJS.experiment.addData('button_start.numClicks', button_start.numClicks);
     psychoJS.experiment.addData('button_start.timesOn', button_start.timesOn);
     psychoJS.experiment.addData('button_start.timesOff', button_start.timesOff);
@@ -1167,7 +1152,6 @@ function ExampleRoutineBegin(snapshot) {
     // update component parameters for each repeat
     // reset button_start_2 to account for continued clicks & clear times on/off
     button_start_2.reset()
-    psychoJS.experiment.addData('Example.started', globalClock.getTime());
     ExampleMaxDuration = null
     // keep track of which components have finished
     ExampleComponents = [];
@@ -1332,7 +1316,6 @@ function ExampleRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('Example.stopped', globalClock.getTime());
     psychoJS.experiment.addData('button_start_2.numClicks', button_start_2.numClicks);
     psychoJS.experiment.addData('button_start_2.timesOn', button_start_2.timesOn);
     psychoJS.experiment.addData('button_start_2.timesOff', button_start_2.timesOff);
@@ -1373,7 +1356,6 @@ function Demo_ageRoutineBegin(snapshot) {
     age.refresh();
     // reset button_age to account for continued clicks & clear times on/off
     button_age.reset()
-    psychoJS.experiment.addData('Demo_age.started', globalClock.getTime());
     Demo_ageMaxDuration = null
     // keep track of which components have finished
     Demo_ageComponents = [];
@@ -1561,7 +1543,6 @@ function Demo_ageRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('Demo_age.stopped', globalClock.getTime());
     // update the trial handler
     if (currentLoop instanceof MultiStairHandler) {
       currentLoop.addResponse(next_survey.corr, level);
@@ -1608,7 +1589,6 @@ function Demo_GenderRoutineBegin(snapshot) {
     Demo_GenderMaxDurationReached = false;
     // update component parameters for each repeat
     slider_gender.reset()
-    psychoJS.experiment.addData('Demo_Gender.started', globalClock.getTime());
     Demo_GenderMaxDuration = null
     // keep track of which components have finished
     Demo_GenderComponents = [];
@@ -1700,7 +1680,6 @@ function Demo_GenderRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('Demo_Gender.stopped', globalClock.getTime());
     psychoJS.experiment.addData('slider_gender.response', slider_gender.getRating());
     psychoJS.experiment.addData('slider_gender.rt', slider_gender.getRT());
     // the Routine "Demo_Gender" was not non-slip safe, so reset the non-slip timer
@@ -1732,7 +1711,6 @@ function Pre_Survey_TextRoutineBegin(snapshot) {
     routineTimer.add(1.000000);
     Pre_Survey_TextMaxDurationReached = false;
     // update component parameters for each repeat
-    psychoJS.experiment.addData('Pre_Survey_Text.started', globalClock.getTime());
     Pre_Survey_TextMaxDuration = null
     // keep track of which components have finished
     Pre_Survey_TextComponents = [];
@@ -1814,7 +1792,6 @@ function Pre_Survey_TextRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('Pre_Survey_Text.stopped', globalClock.getTime());
     if (routineForceEnded) {
         routineTimer.reset();} else if (Pre_Survey_TextMaxDurationReached) {
         Pre_Survey_TextClock.add(Pre_Survey_TextMaxDuration);
@@ -2475,7 +2452,6 @@ function StimulusRoutineEnd(snapshot) {
 var FirstMaxDurationReached;
 var _first_decision_allKeys;
 var trial_text;
-var gotValidClick;
 var FirstMaxDuration;
 var FirstComponents;
 function FirstRoutineBegin(snapshot) {
@@ -2503,9 +2479,6 @@ function FirstRoutineBegin(snapshot) {
     button_left_first.reset()
     // reset button_right_first to account for continued clicks & clear times on/off
     button_right_first.reset()
-    // setup some python lists for storing info about the mouse_first
-    mouse_first.clicked_name = [];
-    gotValidClick = false; // until a click is received
     trial_count_text.setText(trial_text);
     psychoJS.experiment.addData('First.started', globalClock.getTime());
     FirstMaxDuration = null
@@ -2515,7 +2488,6 @@ function FirstRoutineBegin(snapshot) {
     FirstComponents.push(first_decision);
     FirstComponents.push(button_left_first);
     FirstComponents.push(button_right_first);
-    FirstComponents.push(mouse_first);
     FirstComponents.push(trial_count_text);
     
     for (const thisComponent of FirstComponents)
@@ -2526,8 +2498,6 @@ function FirstRoutineBegin(snapshot) {
 }
 
 
-var prevButtonState;
-var _mouseButtons;
 function FirstRoutineEachFrame() {
   return async function () {
     //--- Loop for each frame of Routine 'First' ---
@@ -2667,65 +2637,6 @@ function FirstRoutineEachFrame() {
       // if button_right_first is clicked next frame, it is a new click
       button_right_first.wasClicked = false;
     }
-    // *mouse_first* updates
-    if (t >= 0.0 && mouse_first.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      mouse_first.tStart = t;  // (not accounting for frame time here)
-      mouse_first.frameNStart = frameN;  // exact frame index
-      
-      mouse_first.status = PsychoJS.Status.STARTED;
-      mouse_first.mouseClock.reset();
-      prevButtonState = mouse_first.getPressed();  // if button is down already this ISN'T a new click
-    }
-    frameRemains = 0.0 + 0 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (mouse_first.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      // keep track of stop time/frame for later
-      mouse_first.tStop = t;  // not accounting for scr refresh
-      mouse_first.frameNStop = frameN;  // exact frame index
-      // update status
-      mouse_first.status = PsychoJS.Status.FINISHED;
-      mouse_first.status = PsychoJS.Status.FINISHED;
-    }
-    
-    // if mouse_first is active this frame...
-    if (mouse_first.status === PsychoJS.Status.STARTED) {
-      _mouseButtons = mouse_first.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          mouse_first.clickableObjects = eval([button_left_first, button_right_first])
-          ;// make sure the mouse's clickable objects are an array
-          if (!Array.isArray(mouse_first.clickableObjects)) {
-              mouse_first.clickableObjects = [mouse_first.clickableObjects];
-          }
-          // iterate through clickable objects and check each
-          for (const obj of mouse_first.clickableObjects) {
-              if (obj.contains(mouse_first)) {
-                  gotValidClick = true;
-                  mouse_first.clicked_name.push(obj.name);
-              }
-          }
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          mouse_first.clickableObjects = eval([button_left_first, button_right_first])
-          ;// make sure the mouse's clickable objects are an array
-          if (!Array.isArray(mouse_first.clickableObjects)) {
-              mouse_first.clickableObjects = [mouse_first.clickableObjects];
-          }
-          // iterate through clickable objects and check each
-          for (const obj of mouse_first.clickableObjects) {
-              if (obj.contains(mouse_first)) {
-                  gotValidClick = true;
-                  mouse_first.clicked_name.push(obj.name);
-              }
-          }
-          // end routine on response
-          continueRoutine = false;
-        }
-      }
-    }
     
     // *trial_count_text* updates
     if (t >= 0.0 && trial_count_text.status === PsychoJS.Status.NOT_STARTED) {
@@ -2769,7 +2680,6 @@ function FirstRoutineEachFrame() {
 }
 
 
-var first_resp;
 function FirstRoutineEnd(snapshot) {
   return async function () {
     //--- Ending Routine 'First' ---
@@ -2801,17 +2711,20 @@ function FirstRoutineEnd(snapshot) {
             first_choice = null;
         }
     }
-    if (mouse_first.isPressedIn(button_left_first)) {
-        first_resp = "IZQUIERDA";
+    if ((button_left_first.numClicks === 1)) {
+        first_choice = "IZQUIERDA";
+    } else {
+        if ((button_right_first.numClicks === 1)) {
+            first_choice = "DERECHA";
+        } else {
+            first_choice = null;
+        }
     }
-    if (mouse_first.isPressedIn(button_right_first)) {
-        first_resp = "DERECHA";
-    }
-    first_choice = first_resp;
-    psychoJS.experiment.addData("mouse_response", first_resp);
-    psychoJS.experiment.addData("final_choice", first_choice);
-    psychoJS.experiment.addData("followed_advice", (first_choice === suggestion));
-    psychoJS.experiment.addData("decision_correct", (first_choice === correct_answer));
+    psychoJS.experiment.addData("correct_answer", correct_answer);
+    psychoJS.experiment.addData("first_choice", first_choice);
+    psychoJS.experiment.addData("decision_correct_first", (first_choice === correct_answer));
+    trials.addData("tilt", tilt);
+    psychoJS.experiment.addData("tilt", tilt);
     
     psychoJS.experiment.addData('button_left_first.numClicks', button_left_first.numClicks);
     psychoJS.experiment.addData('button_left_first.timesOn', button_left_first.timesOn);
@@ -2819,7 +2732,6 @@ function FirstRoutineEnd(snapshot) {
     psychoJS.experiment.addData('button_right_first.numClicks', button_right_first.numClicks);
     psychoJS.experiment.addData('button_right_first.timesOn', button_right_first.timesOn);
     psychoJS.experiment.addData('button_right_first.timesOff', button_right_first.timesOff);
-    // store data for psychoJS.experiment (ExperimentHandler)
     // the Routine "First" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
@@ -2857,9 +2769,6 @@ function AdviceRoutineBegin(snapshot) {
     button_advice_yes.reset()
     // reset button_advice_no to account for continued clicks & clear times on/off
     button_advice_no.reset()
-    // setup some python lists for storing info about the mouse_advice
-    mouse_advice.clicked_name = [];
-    gotValidClick = false; // until a click is received
     psychoJS.experiment.addData('Advice.started', globalClock.getTime());
     AdviceMaxDuration = null
     // keep track of which components have finished
@@ -2868,7 +2777,6 @@ function AdviceRoutineBegin(snapshot) {
     AdviceComponents.push(advice_key);
     AdviceComponents.push(button_advice_yes);
     AdviceComponents.push(button_advice_no);
-    AdviceComponents.push(mouse_advice);
     
     for (const thisComponent of AdviceComponents)
       if ('status' in thisComponent)
@@ -3023,56 +2931,6 @@ function AdviceRoutineEachFrame() {
       // if button_advice_no is clicked next frame, it is a new click
       button_advice_no.wasClicked = false;
     }
-    // *mouse_advice* updates
-    if (t >= 0.0 && mouse_advice.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      mouse_advice.tStart = t;  // (not accounting for frame time here)
-      mouse_advice.frameNStart = frameN;  // exact frame index
-      
-      mouse_advice.status = PsychoJS.Status.STARTED;
-      mouse_advice.mouseClock.reset();
-      prevButtonState = mouse_advice.getPressed();  // if button is down already this ISN'T a new click
-    }
-    
-    // if mouse_advice is active this frame...
-    if (mouse_advice.status === PsychoJS.Status.STARTED) {
-      _mouseButtons = mouse_advice.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          mouse_advice.clickableObjects = eval([button_advice_yes, button_advice_no])
-          ;// make sure the mouse's clickable objects are an array
-          if (!Array.isArray(mouse_advice.clickableObjects)) {
-              mouse_advice.clickableObjects = [mouse_advice.clickableObjects];
-          }
-          // iterate through clickable objects and check each
-          for (const obj of mouse_advice.clickableObjects) {
-              if (obj.contains(mouse_advice)) {
-                  gotValidClick = true;
-                  mouse_advice.clicked_name.push(obj.name);
-              }
-          }
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          mouse_advice.clickableObjects = eval([button_advice_yes, button_advice_no])
-          ;// make sure the mouse's clickable objects are an array
-          if (!Array.isArray(mouse_advice.clickableObjects)) {
-              mouse_advice.clickableObjects = [mouse_advice.clickableObjects];
-          }
-          // iterate through clickable objects and check each
-          for (const obj of mouse_advice.clickableObjects) {
-              if (obj.contains(mouse_advice)) {
-                  gotValidClick = true;
-                  mouse_advice.clicked_name.push(obj.name);
-              }
-          }
-          // end routine on response
-          continueRoutine = false;
-        }
-      }
-    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -3101,7 +2959,6 @@ function AdviceRoutineEachFrame() {
 }
 
 
-var advisor_follow;
 function AdviceRoutineEnd(snapshot) {
   return async function () {
     //--- Ending Routine 'Advice' ---
@@ -3134,17 +2991,16 @@ function AdviceRoutineEnd(snapshot) {
     
     advice_key.stop();
     // Run 'End Routine' code from code
-    if (mouse_advice.isPressedIn(button_advice_yes)) {
-        advisor_follow = "y";
+    if ((button_advice_yes.numClicks === 1)) {
+        advisor_follow = "Y";
     } else {
-        if (mouse_advice.isPressedIn(button_advice_no)) {
-            advisor_follow = "n";
+        if ((button_advice_no.numClicks === 1)) {
+            advisor_follow = "N";
+        } else {
+            advisor_follow = null;
         }
     }
-    trials.addData("tilt", tilt);
-    psychoJS.experiment.addData("tilt", tilt);
-    psychoJS.experiment.addData("correct_answer", correct_answer);
-    psychoJS.experiment.addData("requested_advice", advice_key.keys);
+    psychoJS.experiment.addData("requested_advice", advisor_follow);
     
     psychoJS.experiment.addData('button_advice_yes.numClicks', button_advice_yes.numClicks);
     psychoJS.experiment.addData('button_advice_yes.timesOn', button_advice_yes.timesOn);
@@ -3152,7 +3008,6 @@ function AdviceRoutineEnd(snapshot) {
     psychoJS.experiment.addData('button_advice_no.numClicks', button_advice_no.numClicks);
     psychoJS.experiment.addData('button_advice_no.timesOn', button_advice_no.timesOn);
     psychoJS.experiment.addData('button_advice_no.timesOff', button_advice_no.timesOff);
-    // store data for psychoJS.experiment (ExperimentHandler)
     // the Routine "Advice" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
@@ -3208,12 +3063,9 @@ function AdvisorRoutineBegin(snapshot) {
     button_left_final.reset()
     // reset button_right_final to account for continued clicks & clear times on/off
     button_right_final.reset()
-    // setup some python lists for storing info about the mouse_final
-    mouse_final.clicked_name = [];
-    gotValidClick = false; // until a click is received
     psychoJS.experiment.addData('Advisor.started', globalClock.getTime());
     // skip this Routine if its 'Skip if' condition is True
-    continueRoutine = continueRoutine && !((advisor_follow == 'n'));
+    continueRoutine = continueRoutine && !((advisor_follow == 'N'));
     maxDurationReached = false
     AdvisorMaxDuration = null
     // keep track of which components have finished
@@ -3226,7 +3078,6 @@ function AdvisorRoutineBegin(snapshot) {
     AdvisorComponents.push(decision_key);
     AdvisorComponents.push(button_left_final);
     AdvisorComponents.push(button_right_final);
-    AdvisorComponents.push(mouse_final);
     
     for (const thisComponent of AdvisorComponents)
       if ('status' in thisComponent)
@@ -3435,56 +3286,6 @@ function AdvisorRoutineEachFrame() {
       // if button_right_final is clicked next frame, it is a new click
       button_right_final.wasClicked = false;
     }
-    // *mouse_final* updates
-    if (t >= 0.0 && mouse_final.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      mouse_final.tStart = t;  // (not accounting for frame time here)
-      mouse_final.frameNStart = frameN;  // exact frame index
-      
-      mouse_final.status = PsychoJS.Status.STARTED;
-      mouse_final.mouseClock.reset();
-      prevButtonState = mouse_final.getPressed();  // if button is down already this ISN'T a new click
-    }
-    
-    // if mouse_final is active this frame...
-    if (mouse_final.status === PsychoJS.Status.STARTED) {
-      _mouseButtons = mouse_final.getPressed();
-      if (!_mouseButtons.every( (e,i,) => (e == prevButtonState[i]) )) { // button state changed?
-        prevButtonState = _mouseButtons;
-        if (_mouseButtons.reduce( (e, acc) => (e+acc) ) > 0) { // state changed to a new click
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          mouse_final.clickableObjects = eval([button_left_final, button_right_final])
-          ;// make sure the mouse's clickable objects are an array
-          if (!Array.isArray(mouse_final.clickableObjects)) {
-              mouse_final.clickableObjects = [mouse_final.clickableObjects];
-          }
-          // iterate through clickable objects and check each
-          for (const obj of mouse_final.clickableObjects) {
-              if (obj.contains(mouse_final)) {
-                  gotValidClick = true;
-                  mouse_final.clicked_name.push(obj.name);
-              }
-          }
-          // check if the mouse was inside our 'clickable' objects
-          gotValidClick = false;
-          mouse_final.clickableObjects = eval([button_left_final, button_right_final])
-          ;// make sure the mouse's clickable objects are an array
-          if (!Array.isArray(mouse_final.clickableObjects)) {
-              mouse_final.clickableObjects = [mouse_final.clickableObjects];
-          }
-          // iterate through clickable objects and check each
-          for (const obj of mouse_final.clickableObjects) {
-              if (obj.contains(mouse_final)) {
-                  gotValidClick = true;
-                  mouse_final.clicked_name.push(obj.name);
-              }
-          }
-          // end routine on response
-          continueRoutine = false;
-        }
-      }
-    }
     // check for quit (typically the Esc key)
     if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
       return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
@@ -3529,24 +3330,29 @@ function AdvisorRoutineEnd(snapshot) {
         if ((decision_key.keys === "j")) {
             final_choice = "DERECHA";
         } else {
-            final_choice = first_choice;
+            final_choice = null;
         }
     }
-    if (mouse_final.isPressedIn(button_left_final)) {
+    if ((button_left_final.numClicks === 1)) {
         final_choice = "IZQUIERDA";
     } else {
-        if (mouse_final.isPressedIn(button_right_final)) {
+        if ((button_right_final.numClicks === 1)) {
             final_choice = "DERECHA";
         } else {
-            final_choice = first_choice;
+            final_choice = null;
         }
     }
-    psychoJS.experiment.addData("final_choice", final_choice);
-    psychoJS.experiment.addData("followed_advice", (final_choice === suggestion));
-    psychoJS.experiment.addData("decision_correct", (final_choice === correct_answer));
     psychoJS.experiment.addData("current_accuracy", current_accuracy);
     psychoJS.experiment.addData("advisor_suggestion", suggestion);
     psychoJS.experiment.addData("advisor_correct", (suggestion === correct_answer));
+    psychoJS.experiment.addData("final_choice", final_choice);
+    if ((final_choice !== null)) {
+        psychoJS.experiment.addData("followed_advice", (final_choice === suggestion));
+        psychoJS.experiment.addData("decision_correct_final", (final_choice === correct_answer));
+    } else {
+        psychoJS.experiment.addData("followed_advice", null);
+        psychoJS.experiment.addData("decision_correct_final", null);
+    }
     
     // update the trial handler
     if (currentLoop instanceof MultiStairHandler) {
@@ -3566,7 +3372,6 @@ function AdvisorRoutineEnd(snapshot) {
     psychoJS.experiment.addData('button_right_final.numClicks', button_right_final.numClicks);
     psychoJS.experiment.addData('button_right_final.timesOn', button_right_final.timesOn);
     psychoJS.experiment.addData('button_right_final.timesOff', button_right_final.timesOff);
-    // store data for psychoJS.experiment (ExperimentHandler)
     // the Routine "Advisor" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
@@ -3598,10 +3403,22 @@ function ITIRoutineBegin(snapshot) {
     ITIMaxDurationReached = false;
     // update component parameters for each repeat
     // Run 'Begin Routine' code from code_6
-    if ((correct_answer === final_choice)) {
-        feedback = "CORRECTA";
+    if ((advisor_follow === "N")) {
+        if ((correct_answer === first_choice)) {
+            feedback = "CORRECTA";
+        } else {
+            feedback = "INCORRECTA";
+        }
     } else {
-        feedback = "INCORRECTA";
+        if ((advisor_follow === "Y")) {
+            if ((correct_answer === final_choice)) {
+                feedback = "CORRECTA";
+            } else {
+                feedback = "INCORRECTA";
+            }
+        } else {
+            feedback = null;
+        }
     }
     feedback_text = `Tu decisión final fue: ${feedback}`;
     
@@ -3730,7 +3547,7 @@ function Trust_AdjustmentRoutineBegin(snapshot) {
     
     psychoJS.experiment.addData('Trust_Adjustment.started', globalClock.getTime());
     // skip this Routine if its 'Skip if' condition is True
-    continueRoutine = continueRoutine && !((advisor_follow == 'n'));
+    continueRoutine = continueRoutine && !((advisor_follow == 'N'));
     maxDurationReached = false
     Trust_AdjustmentMaxDuration = null
     // keep track of which components have finished
@@ -3970,7 +3787,6 @@ function Post_Survey_TextRoutineBegin(snapshot) {
     routineTimer.add(1.000000);
     Post_Survey_TextMaxDurationReached = false;
     // update component parameters for each repeat
-    psychoJS.experiment.addData('Post_Survey_Text.started', globalClock.getTime());
     Post_Survey_TextMaxDuration = null
     // keep track of which components have finished
     Post_Survey_TextComponents = [];
@@ -4052,7 +3868,6 @@ function Post_Survey_TextRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('Post_Survey_Text.stopped', globalClock.getTime());
     if (routineForceEnded) {
         routineTimer.reset();} else if (Post_Survey_TextMaxDurationReached) {
         Post_Survey_TextClock.add(Post_Survey_TextMaxDuration);
@@ -4228,7 +4043,6 @@ function EndRoutineBegin(snapshot) {
     routineTimer.add(1.000000);
     EndMaxDurationReached = false;
     // update component parameters for each repeat
-    psychoJS.experiment.addData('End.started', globalClock.getTime());
     EndMaxDuration = null
     // keep track of which components have finished
     EndComponents = [];
@@ -4310,7 +4124,6 @@ function EndRoutineEnd(snapshot) {
         thisComponent.setAutoDraw(false);
       }
     }
-    psychoJS.experiment.addData('End.stopped', globalClock.getTime());
     if (routineForceEnded) {
         routineTimer.reset();} else if (EndMaxDurationReached) {
         EndClock.add(EndMaxDuration);
